@@ -5,8 +5,8 @@ namespace Qtl.Keylogging;
 
 internal class LastPInvokeException : Win32Exception
 {
-    public LastPInvokeException() : base(Marshal.GetLastPInvokeError(), Marshal.GetLastPInvokeErrorMessage()) 
-    {
-        
-    }
+	public LastPInvokeException() : base(Marshal.GetLastPInvokeError(), Marshal.GetLastPInvokeErrorMessage())
+	{
+
+	}
 }
