@@ -7,17 +7,23 @@ var keylogger = KeyloggerTask.StartNew(keylog =>
     Console.WriteLine($"Keylogger event: {keylog}");
 });
 
-var hotkeys = HotKeyTask.StartNew();
+var hotKeys = HotKeyTask.StartNew();
 
-hotkeys.AddHotKey(HotKeyModifiers.NoRepeat | HotKeyModifiers.Shift, 'H', e =>
+var hotKeyTriggers = 0;
+hotKeys.AddHotKey(HotKeyModifiers.NoRepeat | HotKeyModifiers.Shift, 'H', e =>
 {
     Console.WriteLine($"HotKey event: {e}");
 
     using var _ = Process.Start("notepad.exe");
+
+    if (++hotKeyTriggers is 3)
+    {
+        hotKeys.RemoveHotKey(e);
+    }
 });
 
 Console.WriteLine("Press enter to quit...");
 Console.ReadKey();
 
 await keylogger.StopAsync();
-await hotkeys.StopAsync();
+await hotKeys.StopAsync();
