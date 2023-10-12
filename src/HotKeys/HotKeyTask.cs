@@ -46,7 +46,7 @@ public sealed class HotKeyTask : BackgroundMessagePumpTask
             {
                 try
                 {
-                    hotkey.HotKeyEventHandler(hotkey.HotKeyEventArgs);
+                    hotkey.OnHotKey(hotkey.HotKey);
                 }
                 catch (Exception ex)
                 {
@@ -96,13 +96,13 @@ public sealed class HotKeyTask : BackgroundMessagePumpTask
 
     protected override void OnWindowCreated(nint windowHandle) { }
 
-    public void AddHotKey(HotKeyModifiers modifiers, int virtualKey, HotKeyEventHandler onHotKeyEventHandler)
+    public void AddHotKey(HotKeyModifiers modifiers, int virtualKey, Action<HotKey> onHotKeyEventHandler)
     {
-        ArgumentNullException.ThrowIfNull(onHotKeyEventHandler, nameof(onHotKeyEventHandler));
+        ArgumentNullException.ThrowIfNull(onHotKeyEventHandler);
 
         var id = _id++;
         var hotkey = new RegisteredHotKey(modifiers, virtualKey, id, onHotKeyEventHandler);
         _toBeRegisterdHotKeys.Enqueue(hotkey);
-        _ = Native.PostMessage((HWND)WindowHandle, WM_ADD_HOT_KEY, 0, 0);
+        InvokeMessageAsync(WM_ADD_HOT_KEY);
     }
 }

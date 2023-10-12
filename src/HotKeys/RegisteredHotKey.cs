@@ -1,6 +1,8 @@
-﻿namespace Qtl.Keylogging.HotKeys;
+﻿using System;
 
-public record RegisteredHotKey(HotKeyModifiers Modifiers, int VirtualKey, int Id, HotKeyEventHandler HotKeyEventHandler)
+namespace Qtl.Keylogging.HotKeys;
+
+public record RegisteredHotKey(HotKeyModifiers Modifiers, int VirtualKey, int Id, Action<HotKey> OnHotKey)
 {
-    public HotKeyEventArg HotKeyEventArgs => new(Modifiers, VirtualKey, Id);
+    public HotKey HotKey => new(Modifiers, VirtualKey, Id);
 }

@@ -9,11 +9,11 @@ var keylogger = KeyloggerTask.StartNew(keylog =>
 
 var hotkeys = HotKeyTask.StartNew();
 
-hotkeys.AddHotKey(HotKeyModifiers.NoRepeat | HotKeyModifiers.Shift, 'H', async e =>
+hotkeys.AddHotKey(HotKeyModifiers.NoRepeat | HotKeyModifiers.Shift, 'H', e =>
 {
     Console.WriteLine($"HotKey event: {e}");
 
-    await Process.Start("notepad.exe").WaitForExitAsync();
+    using var _ = Process.Start("notepad.exe");
 });
 
 Console.WriteLine("Press enter to quit...");

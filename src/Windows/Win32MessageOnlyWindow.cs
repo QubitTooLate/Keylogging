@@ -21,7 +21,7 @@ internal sealed unsafe class Win32MessageOnlyWindow : IDisposable
         return window._messageEventHandler!.Invoke(window, message, w, l);
     }
 
-    private static char* GetUnmanagedRandomString()
+    private static char* GetRandomUnmanagedString()
     {
         var randomString = Guid.NewGuid().ToString();
         var unmanagedRandomString = (char*)NativeMemory.Alloc((nuint)randomString.Length + 1, sizeof(char));
@@ -38,8 +38,8 @@ internal sealed unsafe class Win32MessageOnlyWindow : IDisposable
     {
         _messageEventHandler = messageEventHandler;
 
-        var unmanagedWindowName = GetUnmanagedRandomString();
-        var unmanagedClassName = GetUnmanagedRandomString();
+        var unmanagedWindowName = GetRandomUnmanagedString();
+        var unmanagedClassName = GetRandomUnmanagedString();
 
         var windowClass = new WNDCLASSEXW
         {

@@ -58,6 +58,8 @@ public abstract class BackgroundMessagePumpTask : IDisposable
 
     protected abstract void OnWindowMessage(IntPtr windowHandle, uint message, nuint w, nint l);
 
+    protected void InvokeMessageAsync(uint message, nuint w = 0, nint l = 0) => _ = Native.PostMessage(_windowHandle, message, w, l);
+
     protected IntPtr WindowHandle => _windowHandle;
 
     public async Task StopAsync()
@@ -65,7 +67,7 @@ public abstract class BackgroundMessagePumpTask : IDisposable
         if (!_started) { return; }
         _started = false;
 
-        if (_windowHandle != HWND.Null) { _ = Native.PostMessage(_windowHandle, Native.WM_QUIT, 0, 0); }
+        if (_windowHandle != HWND.Null) { InvokeMessageAsync(Native.WM_QUIT); }
         await _backgroundTask!;
     }
 
